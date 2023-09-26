@@ -1,0 +1,36 @@
+<.header>
+  Investor <%= @investor.id %>
+  <:subtitle>This is a investor record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/investors/#{@investor}/edit"}>
+      <.button>Edit investor</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="First name"><%= @investor.first_name %></:item>
+  <:item title="Last name"><%= @investor.last_name %></:item>
+  <:item title="Date of birth"><%= @investor.date_of_birth %></:item>
+  <:item title="Phone number"><%= @investor.phone_number %></:item>
+  <:item title="Street address"><%= @investor.street_address %></:item>
+  <:item title="State"><%= @investor.state %></:item>
+  <:item title="Zip code"><%= @investor.zip_code %></:item>
+</.list>
+
+<hr />
+
+<div class="text-gray-800 bg-indigo-100 rounded-lg p-8 my-8">
+  <h2 class="font-bold mb-4">Attached Files:</h2>
+  <ul class="list-disc">
+  <%= for file <- @investor.investor_files do %>
+    <li>
+      <.link href={~p"/uploads/#{file.filename}"}>
+        <%= file.filename %>
+      </.link>
+    </li>
+  <% end %>
+  </ul>
+</div>
+
+<.back navigate={~p"/investors"}>Back to investors</.back>

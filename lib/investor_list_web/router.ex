@@ -18,6 +18,7 @@ defmodule InvestorListWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/investors", InvestorController
   end
 
   # Other scopes may use custom stacks.
