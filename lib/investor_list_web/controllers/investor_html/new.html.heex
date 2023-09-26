@@ -1,0 +1,8 @@
+<.header>
+  New Investor
+  <:subtitle>Use this form to manage investor records in your database.</:subtitle>
+</.header>
+
+<.investor_form changeset={@changeset} action={~p"/investors"} />
+
+<.back navigate={~p"/investors"}>Back to investors</.back>

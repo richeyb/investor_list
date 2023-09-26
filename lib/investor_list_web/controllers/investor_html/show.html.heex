@@ -1,0 +1,21 @@
+<.header>
+  Investor <%= @investor.id %>
+  <:subtitle>This is a investor record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/investors/#{@investor}/edit"}>
+      <.button>Edit investor</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="First name"><%= @investor.first_name %></:item>
+  <:item title="Last name"><%= @investor.last_name %></:item>
+  <:item title="Date of birth"><%= @investor.date_of_birth %></:item>
+  <:item title="Phone number"><%= @investor.phone_number %></:item>
+  <:item title="Street address"><%= @investor.street_address %></:item>
+  <:item title="State"><%= @investor.state %></:item>
+  <:item title="Zip code"><%= @investor.zip_code %></:item>
+</.list>
+
+<.back navigate={~p"/investors"}>Back to investors</.back>

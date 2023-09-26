@@ -1,0 +1,29 @@
+<.header>
+  Listing Investors
+  <:actions>
+    <.link href={~p"/investors/new"}>
+      <.button>New Investor</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="investors" rows={@investors} row_click={&JS.navigate(~p"/investors/#{&1}")}>
+  <:col :let={investor} label="First name"><%= investor.first_name %></:col>
+  <:col :let={investor} label="Last name"><%= investor.last_name %></:col>
+  <:col :let={investor} label="Date of birth"><%= investor.date_of_birth %></:col>
+  <:col :let={investor} label="Phone number"><%= investor.phone_number %></:col>
+  <:col :let={investor} label="Street address"><%= investor.street_address %></:col>
+  <:col :let={investor} label="State"><%= investor.state %></:col>
+  <:col :let={investor} label="Zip code"><%= investor.zip_code %></:col>
+  <:action :let={investor}>
+    <div class="sr-only">
+      <.link navigate={~p"/investors/#{investor}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/investors/#{investor}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={investor}>
+    <.link href={~p"/investors/#{investor}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
