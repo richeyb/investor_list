@@ -18,7 +18,7 @@ defmodule InvestorList.Investors do
 
   """
   def list_investors do
-    Repo.all(Investor)
+    Repo.all(Investor) |> Repo.preload(:investor_files)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule InvestorList.Investors do
       ** (Ecto.NoResultsError)
 
   """
-  def get_investor!(id), do: Repo.get!(Investor, id)
+  def get_investor!(id), do: Repo.get!(Investor, id) |> Repo.preload(:investor_files)
 
   @doc """
   Creates a investor.

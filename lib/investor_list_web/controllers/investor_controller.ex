@@ -4,6 +4,8 @@ defmodule InvestorListWeb.InvestorController do
   alias InvestorList.Investors
   alias InvestorList.Investors.Investor
 
+  require IEx
+
   def index(conn, _params) do
     investors = Investors.list_investors()
     render(conn, :index, investors: investors)
@@ -14,7 +16,9 @@ defmodule InvestorListWeb.InvestorController do
     render(conn, :new, changeset: changeset)
   end
 
-  def create(conn, %{"investor" => investor_params}) do
+  def create(conn, %{"investor" => investor_params, "files" => file_params}) do
+    files = handle_file_uploads(file_params)
+    investor_params = Map.put(investor_params, "investor_files", files)
     case Investors.create_investor(investor_params) do
       {:ok, investor} ->
         conn
@@ -25,6 +29,16 @@ defmodule InvestorListWeb.InvestorController do
         render(conn, :new, changeset: changeset)
     end
   end
+
+  defp handle_file_uploads(files) when is_list(files) and not is_nil(files) do
+    Enum.map(files, fn file ->
+      directory = Path.join([:code.priv_dir(:investor_list), "static", "uploads"])
+      path = Path.join([directory, file.filename])
+      File.cp!(file.path, path)
+      %{ filename: file.filename, path: path }
+    end)
+  end
+  defp handle_file_uploads(_), do: nil
 
   def show(conn, %{"id" => id}) do
     investor = Investors.get_investor!(id)

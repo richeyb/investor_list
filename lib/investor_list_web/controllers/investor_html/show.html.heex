@@ -18,4 +18,19 @@
   <:item title="Zip code"><%= @investor.zip_code %></:item>
 </.list>
 
+<hr />
+
+<div class="text-gray-800 bg-indigo-100 rounded-lg p-8 my-8">
+  <h2 class="font-bold mb-4">Attached Files:</h2>
+  <ul class="list-disc">
+  <%= for file <- @investor.investor_files do %>
+    <li>
+      <.link href={~p"/uploads/#{file.filename}"}>
+        <%= file.filename %>
+      </.link>
+    </li>
+  <% end %>
+  </ul>
+</div>
+
 <.back navigate={~p"/investors"}>Back to investors</.back>

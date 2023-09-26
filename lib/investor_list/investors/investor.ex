@@ -20,6 +20,7 @@ defmodule InvestorList.Investors.Investor do
   def changeset(investor, attrs) do
     investor
     |> cast(attrs, [:first_name, :last_name, :date_of_birth, :phone_number, :street_address, :state, :zip_code])
+    |> cast_assoc(:investor_files)
     |> validate_required([:first_name, :last_name, :date_of_birth, :phone_number, :street_address, :state, :zip_code])
   end
 end
