@@ -132,11 +132,14 @@ defmodule InvestorList.Investors do
       nil
 
   """
-  def get_duplicate(%{"first_name" => first_name, "last_name" => last_name, "date_of_birth" => date_of_birth}) do
+  def get_duplicate(%{"first_name" => first_name, "last_name" => last_name, "date_of_birth" => date_of_birth})
+    when not is_nil(first_name) and not is_nil(last_name) and not is_nil(date_of_birth)
+  do
     query = from i in Investor,
       where: fragment("? ilike ?", i.first_name, ^first_name),
       where: fragment("? ilike ?", i.last_name, ^last_name),
       where: (i.date_of_birth == ^date_of_birth)
     Repo.one(query)
   end
+  def get_duplicate(_), do: nil
 end

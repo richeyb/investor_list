@@ -17,7 +17,13 @@ defmodule InvestorList.InvestorsFixtures do
         date_of_birth: ~D[2023-09-25],
         phone_number: "some phone_number",
         street_address: "some street_address",
-        zip_code: "some zip_code"
+        zip_code: "some zip_code",
+        investor_files: [
+          %{
+            filename: "some filename",
+            path: "some path"
+          }
+        ]
       })
       |> InvestorList.Investors.create_investor()
 

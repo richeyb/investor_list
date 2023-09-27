@@ -19,18 +19,18 @@ defmodule InvestorListWeb.InvestorController do
   def create(conn, %{"investor" => _investor_params}=params) do
     investor_params = add_investor_file_params(params)
 
-    if existing_investor = Investors.get_duplicate(investor_params) do
-      update_investor(conn, existing_investor, investor_params)
-    else
-      case Investors.create_investor(investor_params) do
-        {:ok, investor} ->
-          conn
-          |> put_flash(:info, "Investor created successfully.")
-          |> redirect(to: ~p"/investors/#{investor}")
+    case Investors.get_duplicate(investor_params) do
+      nil ->
+        case Investors.create_investor(investor_params) do
+          {:ok, investor} ->
+            conn
+            |> put_flash(:info, "Investor created successfully.")
+            |> redirect(to: ~p"/investors/#{investor}")
 
-        {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, :new, changeset: changeset)
-      end
+          {:error, %Ecto.Changeset{} = changeset} ->
+            render(conn, :new, changeset: changeset)
+        end
+      existing_investor -> update_investor(conn, existing_investor, investor_params)
     end
   end
 
