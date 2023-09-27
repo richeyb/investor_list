@@ -43,13 +43,13 @@ defmodule InvestorListWeb.UserRegistrationControllerTest do
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, ~p"/users/register", %{
-          "user" => %{"email" => "with spaces", "password" => "too short"}
+          "user" => %{"email" => "with spaces", "password" => "not"}
         })
 
       response = html_response(conn, 200)
       assert response =~ "Register"
       assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 12 character"
+      assert response =~ "should be at least 4 character"
     end
   end
 end
