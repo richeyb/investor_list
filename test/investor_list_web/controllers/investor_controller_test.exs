@@ -8,6 +8,7 @@ defmodule InvestorListWeb.InvestorControllerTest do
   @invalid_attrs %{state: nil, first_name: nil, last_name: nil, date_of_birth: nil, phone_number: nil, street_address: nil, zip_code: nil}
 
   describe "index" do
+    setup :register_and_log_in_user
     test "lists all investors", %{conn: conn} do
       conn = get(conn, ~p"/investors")
       assert html_response(conn, 200) =~ "Listing Investors"
@@ -22,6 +23,7 @@ defmodule InvestorListWeb.InvestorControllerTest do
   end
 
   describe "create investor" do
+    setup :register_and_log_in_user
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, ~p"/investors", investor: @create_attrs)
 
@@ -56,7 +58,7 @@ defmodule InvestorListWeb.InvestorControllerTest do
   end
 
   describe "edit investor" do
-    setup [:create_investor]
+    setup [:create_investor, :register_and_log_in_user]
 
     test "renders form for editing chosen investor", %{conn: conn, investor: investor} do
       conn = get(conn, ~p"/investors/#{investor}/edit")
@@ -65,7 +67,7 @@ defmodule InvestorListWeb.InvestorControllerTest do
   end
 
   describe "update investor" do
-    setup [:create_investor]
+    setup [:create_investor, :register_and_log_in_user]
 
     test "redirects when data is valid", %{conn: conn, investor: investor} do
       conn = put(conn, ~p"/investors/#{investor}", investor: @update_attrs)
@@ -82,7 +84,7 @@ defmodule InvestorListWeb.InvestorControllerTest do
   end
 
   describe "delete investor" do
-    setup [:create_investor]
+    setup [:create_investor, :register_and_log_in_user]
 
     test "deletes chosen investor", %{conn: conn, investor: investor} do
       conn = delete(conn, ~p"/investors/#{investor}")
