@@ -32,6 +32,23 @@ defmodule InvestorListWeb.InvestorControllerTest do
       assert html_response(conn, 200) =~ "Investor #{id}"
     end
 
+    test "updates an existing user if a duplicate is found", %{conn: conn} do
+      conn = post(conn, ~p"/investors", investor: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == ~p"/investors/#{id}"
+
+      conn = get(conn, ~p"/investors/#{id}")
+      assert html_response(conn, 200) =~ "Investor #{id}"
+      assert !(html_response(conn, 200) =~ "8675309")
+
+      conn = post(conn, ~p"/investors", investor: Map.put(@create_attrs, :phone_number, "8675309"))
+      assert %{id: id} = redirected_params(conn)
+
+      conn = get(conn, ~p"/investors/#{id}")
+      assert html_response(conn, 200) =~ "Investor #{id}"
+      assert html_response(conn, 200) =~ "8675309"
+    end
+
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, ~p"/investors", investor: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Investor"

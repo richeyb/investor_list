@@ -67,5 +67,25 @@ defmodule InvestorList.InvestorsTest do
       investor = investor_fixture()
       assert %Ecto.Changeset{} = Investors.change_investor(investor)
     end
+
+    test "get_duplicate/1 returns the investor with matching first name/last name/dob" do
+      investor = investor_fixture()
+      assert Investors.get_duplicate(%{"first_name" => investor.first_name, "last_name" => investor.last_name, "date_of_birth" => investor.date_of_birth}) == investor
+    end
+
+    test "get_duplicate/1 returns nil without matching first name/last name/dob" do
+      investor = investor_fixture()
+      assert is_nil(Investors.get_duplicate(%{"first_name" => "blgfdgfdlgfd!!", "last_name" => investor.last_name, "date_of_birth" => investor.date_of_birth}))
+    end
+
+    test "is_duplicate?/1 returns true with matching first name/last name/dob" do
+      investor = investor_fixture()
+      assert Investors.is_duplicate?(%{"first_name" => investor.first_name, "last_name" => investor.last_name, "date_of_birth" => investor.date_of_birth}) == true
+    end
+
+    test "is_duplicate?/1 returns false without matching first name/last name/dob" do
+      investor = investor_fixture()
+      assert Investors.is_duplicate?(%{"first_name" => "blgfdgfdlgfd!!", "last_name" => investor.last_name, "date_of_birth" => investor.date_of_birth}) == false
+    end
   end
 end

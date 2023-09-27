@@ -139,7 +139,7 @@ defmodule InvestorList.Investors do
       where: fragment("? ilike ?", i.first_name, ^first_name),
       where: fragment("? ilike ?", i.last_name, ^last_name),
       where: (i.date_of_birth == ^date_of_birth)
-    Repo.one(query)
+    Repo.one(query) |> Repo.preload(:investor_files)
   end
   def get_duplicate(_), do: nil
 end
