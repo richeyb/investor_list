@@ -16,19 +16,29 @@ defmodule InvestorListWeb.InvestorController do
     render(conn, :new, changeset: changeset)
   end
 
-  def create(conn, %{"investor" => investor_params, "files" => file_params}) do
-    files = handle_file_uploads(file_params)
-    investor_params = Map.put(investor_params, "investor_files", files)
-    case Investors.create_investor(investor_params) do
-      {:ok, investor} ->
-        conn
-        |> put_flash(:info, "Investor created successfully.")
-        |> redirect(to: ~p"/investors/#{investor}")
+  def create(conn, %{"investor" => _investor_params}=params) do
+    investor_params = add_investor_file_params(params)
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+    if existing_investor = Investors.get_duplicate(investor_params) do
+      update_investor(conn, existing_investor, investor_params)
+    else
+      case Investors.create_investor(investor_params) do
+        {:ok, investor} ->
+          conn
+          |> put_flash(:info, "Investor created successfully.")
+          |> redirect(to: ~p"/investors/#{investor}")
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, :new, changeset: changeset)
+      end
     end
   end
+
+  defp add_investor_file_params(%{"investor" => investor_params, "files" => file_params}) do
+    files = handle_file_uploads(file_params)
+    Map.put(investor_params, "investor_files", files)
+  end
+  defp add_investor_file_params(%{"investor" => investor_params}), do: investor_params
 
   defp handle_file_uploads(files) when is_list(files) and not is_nil(files) do
     Enum.map(files, fn file ->
@@ -54,6 +64,10 @@ defmodule InvestorListWeb.InvestorController do
   def update(conn, %{"id" => id, "investor" => investor_params}) do
     investor = Investors.get_investor!(id)
 
+    update_investor(conn, investor, investor_params)
+  end
+
+  defp update_investor(conn, investor, investor_params) do
     case Investors.update_investor(investor, investor_params) do
       {:ok, investor} ->
         conn

@@ -11,7 +11,7 @@ defmodule InvestorList.Investors.Investor do
     field :street_address, :string
     field :zip_code, :string
 
-    has_many :investor_files, InvestorList.Investors.InvestorFile
+    has_many :investor_files, InvestorList.Investors.InvestorFile, on_delete: :delete_all
 
     timestamps()
   end
