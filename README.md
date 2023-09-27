@@ -1,5 +1,12 @@
 # InvestorList
 
+Work is as complete as I can get it for 2 hours at this point. Things I'd consider adding:
+
+    - Tying logins better to investors
+    - Adding admin logins
+    - Better support for uploading large files (maybe either Liveview or a GenServer to do this?)
+    - No styling outside of default Phoenix styling
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
