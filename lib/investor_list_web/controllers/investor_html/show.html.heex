@@ -20,7 +20,7 @@
 
 <hr />
 
-<div class="text-gray-800 bg-indigo-100 rounded-lg p-8 my-8">
+<div :if={Enum.any?(@investor.investor_files)} class="text-gray-800 bg-indigo-100 rounded-lg p-8 my-8">
   <h2 class="font-bold mb-4">Attached Files:</h2>
   <ul class="list-disc">
   <%= for file <- @investor.investor_files do %>
